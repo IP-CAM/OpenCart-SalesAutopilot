@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<modification>
+	<id>VQMOD CORE FOR OPENCART - DO NOT REMOVE</id>
+	<version>1.4.x and 1.5.x</version>
+	<vqmver required="true">2.4.0</vqmver>
+	<author>Gyorgy, Khauth</author>
+	
+	<file name="catalog/controller/checkout/success.php">
+        <operation>
+            <search position="after"><![CDATA[if (isset($this->session->data['order_id'])) {]]></search>
+            <add><![CDATA[$this->session->data['sap_order_id'] = $this->session->data['order_id'];
+			if (isset($this->session->data['shipping_method']['cost'])) {
+				$this->session->data['sap_shipping'] = $this->session->data['shipping_method']['cost'];
+			} else {
+				$this->session->data['sap_shipping'] = 0;
+			}]]></add>
+        </operation>
+        <operation>
+            <search position="before"><![CDATA['common/column_left',]]></search>
+            <add><![CDATA['checkout/salesautopilot',]]></add>
+        </operation>
+    </file>
+</modification>
