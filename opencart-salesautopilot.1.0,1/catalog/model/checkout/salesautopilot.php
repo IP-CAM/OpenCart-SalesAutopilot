@@ -20,7 +20,11 @@ class ModelCheckoutSalesAutopilot extends Model {
 					$category_name = 'No Category';
 				}
 			
-				$tax += $product['tax'];
+				if ($product['price'] > 0) {
+					$taxPercent = round($product['tax'] / $product['price']);
+				} else {
+					$taxPercent = 0;
+				}
 			
 				$items[] = array(
 					'prod_id'		=> $product['product_id'],
@@ -28,7 +32,7 @@ class ModelCheckoutSalesAutopilot extends Model {
 					'category_id'	=> $category_id,
 					'category_name'	=> $category_name,
 					'qty'			=> $product['quantity'],
-					'tax'			=> $product['tax'],
+					'tax'			=> $taxPercent,
 					'prod_price'	=> round($product['price'],2)
 				);
 			}
@@ -43,8 +47,19 @@ class ModelCheckoutSalesAutopilot extends Model {
 				'shipping_method'	=> $order_query->row['shipping_method'],
 				'payment_method'	=> $order_query->row['payment_method'],
 				'currency'			=> $order_query->row['currency_code'],
+				'mssys_bill_company'	=> $order_query->row['payment_company'],
+				'mssys_bill_country'	=> strtolower($order_query->row['payment_iso_code_2']),
+				'mssys_bill_state'		=> $order_query->row['payment_zone'],
+				'mssys_bill_zip'		=> $order_query->row['payment_postcode'],
+				'mssys_bill_city'		=> $order_query->row['payment_city'],
+				'mssys_bill_address'	=> $order_query->row['payment_address_1'].' '.$order_query->row['payment_address_2'],
+				'mssys_postal_company'	=> $order_query->row['shipping_company'],
+				'mssys_postal_country'	=> strtolower($order_query->row['shipping_iso_code_2']),
+				'mssys_postal_state'		=> $order_query->row['shipping_zone'],
+				'mssys_postal_zip'		=> $order_query->row['shipping_postcode'],
+				'mssys_postal_city'		=> $order_query->row['shipping_city'],
+				'mssys_postal_address'	=> $order_query->row['shipping_address_1'].' '.$order_query->row['shipping_address_2'],
 				//'total'		 		=> round($order_query->row['total'],2),
-				'tax'		  		=> round($tax,2),
 				'netshippingcost'	=> round($this->session->data['sap_shipping'],2),
 				'grossshippingcost'	=> round($this->session->data['sap_shipping'],2),
 				'products'	  => $items
