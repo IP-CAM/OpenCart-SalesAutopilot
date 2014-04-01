@@ -59,6 +59,7 @@ class ModelCheckoutSalesAutopilot extends Model {
 				'mssys_fax'  		=> $order_query->row['fax'],
 				'shipping_method'	=> $order_query->row['shipping_method'],
 				'payment_method'	=> $order_query->row['payment_method'],
+				'payment_code'		=> $order_query->row['payment_code'],
 				'currency'			=> $order_query->row['currency_code'],
 				'mssys_bill_company'	=> $order_query->row['payment_company'],
 				'mssys_bill_country'	=> strtolower($paymentISOCode),
@@ -72,10 +73,10 @@ class ModelCheckoutSalesAutopilot extends Model {
 				'mssys_postal_zip'		=> $order_query->row['shipping_postcode'],
 				'mssys_postal_city'		=> $order_query->row['shipping_city'],
 				'mssys_postal_address'	=> $order_query->row['shipping_address_1'].' '.$order_query->row['shipping_address_2'],
-				//'total'		 		=> round($order_query->row['total'],2),
 				'netshippingcost'	=> round($this->session->data['sap_shipping'],2),
 				'grossshippingcost'	=> round($this->session->data['sap_shipping'] * (1 + $taxPercent / 100),2),
-				'products'	  => $items
+				'products'	  => $items,
+				'mssys_integration_type' => 'opencart'
 			);
 		}
 		return $order_info;
