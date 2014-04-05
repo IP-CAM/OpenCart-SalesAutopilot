@@ -12,8 +12,6 @@ class ControllerCheckoutSalesAutopilot extends Controller {
 			$this->data['order_id'] = $this->session->data['sap_order_id'];
 			$orderData = $this->model_checkout_salesautopilot->getOrderInfo($this->session->data['sap_order_id']);
 			
-			error_log(var_export($orderData,1),3,$_SERVER['DOCUMENT_ROOT'].'/opencart/tmp/checkout.log');
-			
 			$headers = array(
 				'Accept: application/json',
 				'Content-Type: application/json'
@@ -43,7 +41,7 @@ class ControllerCheckoutSalesAutopilot extends Controller {
 		if (file_exists(DIR_TEMPLATE . $this->config->get('config_template') . '/template/module/salesautopilot.tpl')) {
 			$this->template = $this->config->get('config_template') . '/template/module/salesautopilot.tpl';
 		} else {
-			$this->template = 'default/template/module/mc360.tpl';
+			$this->template = 'default/template/module/salesautopilot.tpl';
 		}
 		
 		$this->render();	
